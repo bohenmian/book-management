@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hsbc.bookmanagement.controller.request.CreateBookRequest;
+import com.hsbc.bookmanagement.fixture.CreateBookFixture;
 import com.hsbc.bookmanagement.service.BookService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ class BookControllerTest {
 
     @Test
     void should_return_201_given_the_create_book_success() throws Exception {
-        CreateBookRequest request = new CreateBookRequest("Distributed System", "John", "2024", "962-215-001-2");
+        CreateBookRequest request = CreateBookFixture.bookRequest();
         given(service.create(any())).willReturn(1L);
         mockMvc.perform(post("/api/v1/books")
                         .contentType(MediaType.APPLICATION_JSON)
