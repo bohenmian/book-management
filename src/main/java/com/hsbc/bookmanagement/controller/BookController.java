@@ -1,6 +1,7 @@
 package com.hsbc.bookmanagement.controller;
 
 import com.hsbc.bookmanagement.controller.request.CreateBookRequest;
+import com.hsbc.bookmanagement.service.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,8 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/books")
 public class BookController {
 
+    private final BookService service;
+
+    public BookController(BookService service) {
+        this.service = service;
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody CreateBookRequest request) {
+    public Long create(@RequestBody CreateBookRequest request) {
+        return service.create(request);
     }
 }
