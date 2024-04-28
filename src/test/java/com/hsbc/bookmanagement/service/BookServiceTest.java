@@ -102,7 +102,6 @@ class BookServiceTest {
         @Test
         void should_throw_incorrect_isbn_given_the_dummy_book_isbn() {
             UpdateBookRequest request = new UpdateBookRequest("title", "update author", "2024", "dummy");
-            given(repository.findById(any())).willReturn(Optional.of(existing));
             assertThatThrownBy(() -> service.update(bookId, request))
                     .isInstanceOf(IncorrectISBNFormatException.class)
                     .hasMessageContaining("Incorrect isbn number, please check");

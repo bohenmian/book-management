@@ -20,10 +20,7 @@ public class BookService {
     }
 
     public Long create(CreateBookRequest request) {
-        boolean isValid = ISBNValidator.getInstance().isValid(request.getIsbn());
-        if (!isValid) {
-            throw new IncorrectISBNFormatException(ErrorCode.INCORRECT_ISBN);
-        }
+        validateISBN(request.getIsbn());
         BookEntity book = new BookEntity(request.getTitle(), request.getAuthor(), request.getPublicationYear(), request.getIsbn());
         BookEntity saved = repository.save(book);
         return saved.getId();
@@ -34,13 +31,10 @@ public class BookService {
     }
 
     public void update(Long bookId, UpdateBookRequest request) {
+        validateISBN(request.getIsbn());
         BookEntity entity = findById(bookId);
         if (entity == null) {
             throw new BookNotFoundException(ErrorCode.BOOK_NOT_FOUND);
-        }
-        boolean isValid = ISBNValidator.getInstance().isValid(request.getIsbn());
-        if (!isValid) {
-            throw new IncorrectISBNFormatException(ErrorCode.INCORRECT_ISBN);
         }
         BookEntity updated = new BookEntity(
                 request.getTitle() == null ? entity.getTitle() : request.getTitle(),
@@ -49,5 +43,12 @@ public class BookService {
                 request.getIsbn() == null ? entity.getIsbn() : request.getIsbn()
         );
         repository.save(updated);
+    }
+
+    private void validateISBN(String request) {
+        boolean isValid = ISBNValidator.getInstance().isValid(request);
+        if (!isValid) {
+            throw new IncorrectISBNFormatException(ErrorCode.INCORRECT_ISBN);
+        }
     }
 }
