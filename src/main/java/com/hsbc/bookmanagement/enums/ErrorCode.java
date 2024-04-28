@@ -1,7 +1,8 @@
 package com.hsbc.bookmanagement.enums;
 
 public enum ErrorCode {
-    INCORRECT_ISBN("INCORRECT_ISBN_NUMBER", "incorrect isbn number, please check");
+    INCORRECT_ISBN("INCORRECT_ISBN_NUMBER", "Incorrect isbn number, please check"),
+    BOOK_NOT_FOUND("BOOK_NOT_FOUND", "The book is not found");
 
     String code;
     String message;

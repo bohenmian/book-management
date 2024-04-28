@@ -3,6 +3,7 @@ package com.hsbc.bookmanagement.service;
 import com.hsbc.bookmanagement.controller.request.CreateBookRequest;
 import com.hsbc.bookmanagement.controller.request.UpdateBookRequest;
 import com.hsbc.bookmanagement.enums.ErrorCode;
+import com.hsbc.bookmanagement.exception.BookNotFoundException;
 import com.hsbc.bookmanagement.exception.IncorrectISBNFormatException;
 import com.hsbc.bookmanagement.repository.BookRepository;
 import com.hsbc.bookmanagement.repository.entity.BookEntity;
@@ -34,6 +35,9 @@ public class BookService {
 
     public void update(Long bookId, UpdateBookRequest request) {
         BookEntity entity = findById(bookId);
+        if (entity == null) {
+            throw new BookNotFoundException(ErrorCode.BOOK_NOT_FOUND);
+        }
         BookEntity updated = new BookEntity(
                 request.getTitle() == null ? entity.getTitle() : request.getTitle(),
                 request.getAuthor() == null ? entity.getAuthor() : request.getAuthor(),

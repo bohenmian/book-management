@@ -4,10 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.hsbc.bookmanagement.controller.request.CreateBookRequest;
 import com.hsbc.bookmanagement.controller.request.UpdateBookRequest;
+import com.hsbc.bookmanagement.exception.BookNotFoundException;
 import com.hsbc.bookmanagement.exception.IncorrectISBNFormatException;
 import com.hsbc.bookmanagement.fixture.BookEntityFixture;
 import com.hsbc.bookmanagement.fixture.CreateBookFixture;
@@ -85,6 +87,16 @@ class BookServiceTest {
             given(repository.save(any())).willReturn(existing);
             service.update(bookId, request);
             verify(repository).findById(bookId);
+        }
+
+        @Test
+        void should_throw_exception_given_the_book_not_found() {
+            given(repository.findById(any())).willReturn(Optional.empty());
+            assertThatThrownBy(() -> service.update(bookId, request))
+                    .isInstanceOf(BookNotFoundException.class)
+                    .hasMessageContaining("The book is not found");
+            verify(repository).findById(bookId);
+            verify(repository, times(0)).save(any());
         }
     }
 }
