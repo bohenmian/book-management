@@ -1,6 +1,7 @@
 package com.hsbc.bookmanagement.controller;
 
 import com.hsbc.bookmanagement.controller.request.CreateBookRequest;
+import com.hsbc.bookmanagement.controller.request.UpdateBookRequest;
 import com.hsbc.bookmanagement.repository.entity.BookEntity;
 import com.hsbc.bookmanagement.service.BookService;
 import jakarta.validation.Valid;
@@ -36,7 +37,7 @@ public class BookController {
     }
 
     @PutMapping("{id}/book")
-    public Long update(@PathVariable(name = "id") String id) {
-        return 1L;
+    public Long update(@PathVariable(name = "id") Long id, @RequestBody UpdateBookRequest request) {
+        return service.update(id, request);
     }
 }

@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hsbc.bookmanagement.controller.request.CreateBookRequest;
+import com.hsbc.bookmanagement.controller.request.UpdateBookRequest;
 import com.hsbc.bookmanagement.fixture.BookEntityFixture;
 import com.hsbc.bookmanagement.fixture.CreateBookFixture;
 import com.hsbc.bookmanagement.repository.entity.BookEntity;
@@ -81,11 +82,14 @@ class BookControllerTest {
     class WhenUpdateBookDetail {
         @Test
         void should_update_book_detail_given_the_new_book_information() throws Exception {
-            String request = "dummy";
+            UpdateBookRequest request = new UpdateBookRequest("title", "author", "2024", "962-215-001-2");
+            given(service.update(any(), any())).willReturn(1L);
             mockMvc.perform(put(BASE_PATH + "/{id}/book", 1L)
                             .contentType(MediaType.APPLICATION_JSON)
-                            .content(request))
-                    .andExpect(status().isOk());
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isOk())
+                    .andExpect(content().string("1"));
+            verify(service, times(1)).update(1L, request);
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.hsbc.bookmanagement.service;
 
 import com.hsbc.bookmanagement.controller.request.CreateBookRequest;
+import com.hsbc.bookmanagement.controller.request.UpdateBookRequest;
 import com.hsbc.bookmanagement.enums.ErrorCode;
 import com.hsbc.bookmanagement.exception.IncorrectISBNFormatException;
 import com.hsbc.bookmanagement.repository.BookRepository;
@@ -31,7 +32,7 @@ public class BookService {
         return repository.findById(bookId).orElse(null);
     }
 
-    public Object update(Object any) {
+    public Long update(Long bookId, UpdateBookRequest request) {
         return null;
     }
 }
