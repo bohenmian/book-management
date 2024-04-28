@@ -30,7 +30,7 @@ public class BookController {
     }
 
     @GetMapping("/{id}/book")
-    public BookEntity findById(@PathVariable(name = "id") String id) {
-        return null;
+    public BookEntity findById(@PathVariable(name = "id") Long id) {
+        return service.findById(id);
     }
 }

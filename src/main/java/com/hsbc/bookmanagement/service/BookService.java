@@ -26,4 +26,8 @@ public class BookService {
         BookEntity saved = repository.save(book);
         return saved.getId();
     }
+
+    public BookEntity findById(Long bookId) {
+        return null;
+    }
 }

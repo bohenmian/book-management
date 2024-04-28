@@ -2,16 +2,19 @@ package com.hsbc.bookmanagement.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hsbc.bookmanagement.controller.request.CreateBookRequest;
 import com.hsbc.bookmanagement.fixture.CreateBookFixture;
+import com.hsbc.bookmanagement.repository.entity.BookEntity;
 import com.hsbc.bookmanagement.service.BookService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +61,13 @@ class BookControllerTest {
 
     @Test
     void should_return_the_book_information_given_the_book_id() throws Exception {
-        mockMvc.perform(get("/api/v1/books/{id}/book", "1"))
-                .andExpect(status().isOk());
+        Long bookId = 1L;
+        BookEntity entity = mock(BookEntity.class);
+        given(entity.getId()).willReturn(1L);
+        given(entity.getAuthor()).willReturn("dummy author");
+        given(service.findById(bookId)).willReturn(entity);
+        mockMvc.perform(get("/api/v1/books/{id}/book", 1L))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.author").value("dummy author"));
     }
 }
