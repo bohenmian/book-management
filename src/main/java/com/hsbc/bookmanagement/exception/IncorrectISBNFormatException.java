@@ -1,10 +1,9 @@
 package com.hsbc.bookmanagement.exception;
 
-public class IncorrectISBNFormatException extends RuntimeException {
-    public IncorrectISBNFormatException() {
-    }
+import com.hsbc.bookmanagement.enums.ErrorCode;
 
-    public IncorrectISBNFormatException(String message) {
-        super(message);
+public class IncorrectISBNFormatException extends RuntimeException {
+    public IncorrectISBNFormatException(ErrorCode errorCode) {
+        super(errorCode.getMessage());
     }
 }

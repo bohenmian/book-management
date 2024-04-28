@@ -41,6 +41,6 @@ class BookServiceTest {
         CreateBookRequest request = new CreateBookRequest("Distributed System", "John", "2024", "dummy isbn");
         assertThatThrownBy(() -> service.create(request))
                 .isInstanceOf(IncorrectISBNFormatException.class)
-                .hasMessageContaining("incorrect isbn error");
+                .hasMessageContaining("incorrect isbn number, please check");
     }
 }

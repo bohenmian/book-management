@@ -31,11 +31,13 @@ class BookControllerTest {
     @MockBean
     private BookService service;
 
+    private final static String BASE_PATH = "/api/v1/books";
+
     @Test
     void should_return_201_given_the_create_book_success() throws Exception {
         CreateBookRequest request = CreateBookFixture.bookRequest();
         given(service.create(any())).willReturn(1L);
-        mockMvc.perform(post("/api/v1/books")
+        mockMvc.perform(post(BASE_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
@@ -46,7 +48,7 @@ class BookControllerTest {
     @Test
     void should_return_bad_request_given_the_book_title_is_null() throws Exception {
         CreateBookRequest request = new CreateBookRequest(null, "author", "2024", "962-215-001-2");
-        mockMvc.perform(post("/api/v1/books")
+        mockMvc.perform(post(BASE_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());
