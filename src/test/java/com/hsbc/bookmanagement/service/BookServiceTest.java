@@ -48,7 +48,7 @@ class BookServiceTest {
             CreateBookRequest request = new CreateBookRequest("Distributed System", "John", "2024", "dummy isbn");
             assertThatThrownBy(() -> service.create(request))
                     .isInstanceOf(IncorrectISBNFormatException.class)
-                    .hasMessageContaining("incorrect isbn number, please check");
+                    .hasMessageContaining("Incorrect isbn number, please check");
         }
     }
 
@@ -80,9 +80,9 @@ class BookServiceTest {
     class WhenUpdateBook {
         private final Long bookId = 1L;
         UpdateBookRequest request = new UpdateBookRequest("title", "update author", "2024", "962-215-001-2");
+        BookEntity existing = BookEntityFixture.bookEntityFixture();
         @Test
         void should_update_the_book_given_the_new_book_information() {
-            BookEntity existing = BookEntityFixture.bookEntityFixture();
             given(repository.findById(any())).willReturn(Optional.of(existing));
             given(repository.save(any())).willReturn(existing);
             service.update(bookId, request);
@@ -97,6 +97,15 @@ class BookServiceTest {
                     .hasMessageContaining("The book is not found");
             verify(repository).findById(bookId);
             verify(repository, times(0)).save(any());
+        }
+
+        @Test
+        void should_throw_incorrect_isbn_given_the_dummy_book_isbn() {
+            UpdateBookRequest request = new UpdateBookRequest("title", "update author", "2024", "dummy");
+            given(repository.findById(any())).willReturn(Optional.of(existing));
+            assertThatThrownBy(() -> service.update(bookId, request))
+                    .isInstanceOf(IncorrectISBNFormatException.class)
+                    .hasMessageContaining("Incorrect isbn number, please check");
         }
     }
 }

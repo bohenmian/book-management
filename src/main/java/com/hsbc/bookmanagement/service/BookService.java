@@ -38,6 +38,10 @@ public class BookService {
         if (entity == null) {
             throw new BookNotFoundException(ErrorCode.BOOK_NOT_FOUND);
         }
+        boolean isValid = ISBNValidator.getInstance().isValid(request.getIsbn());
+        if (!isValid) {
+            throw new IncorrectISBNFormatException(ErrorCode.INCORRECT_ISBN);
+        }
         BookEntity updated = new BookEntity(
                 request.getTitle() == null ? entity.getTitle() : request.getTitle(),
                 request.getAuthor() == null ? entity.getAuthor() : request.getAuthor(),
