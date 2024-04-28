@@ -5,6 +5,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -90,6 +91,15 @@ class BookControllerTest {
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isOk());
             verify(service, times(1)).update(1L, request);
+        }
+    }
+
+    @Nested
+    class WhenDeleteBook {
+        @Test
+        void should_delete_the_book_given_the_book_id() throws Exception {
+            mockMvc.perform(delete(BASE_PATH + "/{id}/book", 1L))
+                    .andExpect(status().isOk());
         }
     }
 }
