@@ -2,7 +2,6 @@ package com.hsbc.bookmanagement.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -13,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hsbc.bookmanagement.controller.request.CreateBookRequest;
+import com.hsbc.bookmanagement.fixture.BookEntityFixture;
 import com.hsbc.bookmanagement.fixture.CreateBookFixture;
 import com.hsbc.bookmanagement.repository.entity.BookEntity;
 import com.hsbc.bookmanagement.service.BookService;
@@ -62,9 +62,7 @@ class BookControllerTest {
     @Test
     void should_return_the_book_information_given_the_book_id() throws Exception {
         Long bookId = 1L;
-        BookEntity entity = mock(BookEntity.class);
-        given(entity.getId()).willReturn(1L);
-        given(entity.getAuthor()).willReturn("dummy author");
+        BookEntity entity = BookEntityFixture.bookEntityFixture();
         given(service.findById(bookId)).willReturn(entity);
         mockMvc.perform(get("/api/v1/books/{id}/book", 1L))
                 .andExpect(status().isOk())
