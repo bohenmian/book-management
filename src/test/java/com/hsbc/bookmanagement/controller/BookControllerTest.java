@@ -20,6 +20,7 @@ import com.hsbc.bookmanagement.fixture.BookEntityFixture;
 import com.hsbc.bookmanagement.fixture.CreateBookFixture;
 import com.hsbc.bookmanagement.repository.entity.BookEntity;
 import com.hsbc.bookmanagement.service.BookService;
+import java.util.Collections;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,7 @@ class BookControllerTest {
     class WhenFindAllBooks {
         @Test
         void should_return_all_book_given_invoke_method() throws Exception {
+            given(service.findAll()).willReturn(Collections.emptyList());
             mockMvc.perform(get(BASE_PATH))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.size()").value(0));

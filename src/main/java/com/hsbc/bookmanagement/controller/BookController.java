@@ -36,7 +36,7 @@ public class BookController {
 
     @GetMapping
     public List<BookEntity> findAll() {
-        return Collections.emptyList();
+        return service.findAll();
     }
 
     @GetMapping("/{id}/book")

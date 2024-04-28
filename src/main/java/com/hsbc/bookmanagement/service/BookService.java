@@ -7,6 +7,7 @@ import com.hsbc.bookmanagement.exception.BookNotFoundException;
 import com.hsbc.bookmanagement.exception.IncorrectISBNFormatException;
 import com.hsbc.bookmanagement.repository.BookRepository;
 import com.hsbc.bookmanagement.repository.entity.BookEntity;
+import java.util.List;
 import org.apache.commons.validator.routines.ISBNValidator;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,10 @@ public class BookService {
         BookEntity book = new BookEntity(request.getTitle(), request.getAuthor(), request.getPublicationYear(), request.getIsbn());
         BookEntity saved = repository.save(book);
         return saved.getId();
+    }
+
+    public List<BookEntity> findAll() {
+        return null;
     }
 
     public BookEntity findById(Long bookId) {
