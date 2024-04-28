@@ -53,6 +53,6 @@ public class BookService {
     }
 
     public void delete(Long bookId) {
-
+        repository.deleteById(bookId);
     }
 }

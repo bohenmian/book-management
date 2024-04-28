@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -32,6 +33,8 @@ class BookServiceTest {
     @InjectMocks
     private BookService service;
 
+    private final Long bookId = 1L;
+
     @Nested
     class WhenCreateBook {
         @Test
@@ -40,7 +43,7 @@ class BookServiceTest {
             BookEntity entity = BookEntityFixture.bookEntityFixture();
             given(repository.save(any())).willReturn(entity);
             Long result = service.create(request);
-            assertThat(result).isEqualTo(1L);
+            assertThat(result).isEqualTo(bookId);
         }
 
         @Test
@@ -63,7 +66,7 @@ class BookServiceTest {
             BookEntity result = service.findById(bookId);
 
             assertThat(result.getAuthor()).isEqualTo("dummy author");
-            verify(repository).findById(1L);
+            verify(repository).findById(bookId);
         }
 
         @Test
@@ -78,7 +81,6 @@ class BookServiceTest {
 
     @Nested
     class WhenUpdateBook {
-        private final Long bookId = 1L;
         UpdateBookRequest request = new UpdateBookRequest("title", "update author", "2024", "962-215-001-2");
         BookEntity existing = BookEntityFixture.bookEntityFixture();
         @Test
@@ -105,6 +107,18 @@ class BookServiceTest {
             assertThatThrownBy(() -> service.update(bookId, request))
                     .isInstanceOf(IncorrectISBNFormatException.class)
                     .hasMessageContaining("Incorrect isbn number, please check");
+        }
+    }
+
+    @Nested
+    class WhenDeleteBook {
+        @Test
+        void should_delete_the_book_given_the_book_id() {
+            doNothing().when(repository).deleteById(any());
+
+            service.delete(bookId);
+
+            verify(repository).deleteById(bookId);
         }
     }
 }
