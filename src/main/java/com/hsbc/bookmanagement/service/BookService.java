@@ -2,10 +2,9 @@ package com.hsbc.bookmanagement.service;
 
 import com.hsbc.bookmanagement.controller.request.CreateBookRequest;
 import com.hsbc.bookmanagement.enums.ErrorCode;
-import com.hsbc.bookmanagement.repository.entity.BookEntity;
 import com.hsbc.bookmanagement.exception.IncorrectISBNFormatException;
 import com.hsbc.bookmanagement.repository.BookRepository;
-import java.util.Optional;
+import com.hsbc.bookmanagement.repository.entity.BookEntity;
 import org.apache.commons.validator.routines.ISBNValidator;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +29,9 @@ public class BookService {
 
     public BookEntity findById(Long bookId) {
         return repository.findById(bookId).orElse(null);
+    }
+
+    public Object update(Object any) {
+        return null;
     }
 }

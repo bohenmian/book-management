@@ -6,6 +6,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -73,6 +74,18 @@ class BookControllerTest {
             mockMvc.perform(get(BASE_PATH + "/{id}/book", 1L))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.author").value("dummy author"));
+        }
+    }
+
+    @Nested
+    class WhenUpdateBookDetail {
+        @Test
+        void should_update_book_detail_given_the_new_book_information() throws Exception {
+            String request = "dummy";
+            mockMvc.perform(put(BASE_PATH + "/{id}/book", 1L)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(request))
+                    .andExpect(status().isOk());
         }
     }
 }
