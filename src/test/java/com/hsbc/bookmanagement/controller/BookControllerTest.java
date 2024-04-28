@@ -41,13 +41,14 @@ class BookControllerTest {
     private BookService service;
 
     private final static String BASE_PATH = "/api/v1/books";
+    private final Long bookId = 1L;
 
     @Nested
     class WhenCreateBook {
         @Test
         void should_return_201_given_the_create_book_success() throws Exception {
             CreateBookRequest request = CreateBookFixture.bookRequest();
-            given(service.create(any())).willReturn(1L);
+            given(service.create(any())).willReturn(bookId);
             mockMvc.perform(post(BASE_PATH)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request)))
@@ -71,7 +72,6 @@ class BookControllerTest {
     class WhenFindBookById {
         @Test
         void should_return_the_book_information_given_the_book_id() throws Exception {
-            Long bookId = 1L;
             BookEntity entity = BookEntityFixture.bookEntityFixture();
             given(service.findById(bookId)).willReturn(entity);
             mockMvc.perform(get(BASE_PATH + "/{id}/book", 1L))
@@ -98,6 +98,7 @@ class BookControllerTest {
     class WhenDeleteBook {
         @Test
         void should_delete_the_book_given_the_book_id() throws Exception {
+            doNothing().when(service).delete(bookId);
             mockMvc.perform(delete(BASE_PATH + "/{id}/book", 1L))
                     .andExpect(status().isOk());
         }

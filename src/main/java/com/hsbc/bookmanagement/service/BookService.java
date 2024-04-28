@@ -51,4 +51,8 @@ public class BookService {
             throw new IncorrectISBNFormatException(ErrorCode.INCORRECT_ISBN);
         }
     }
+
+    public void delete(Long bookId) {
+
+    }
 }
