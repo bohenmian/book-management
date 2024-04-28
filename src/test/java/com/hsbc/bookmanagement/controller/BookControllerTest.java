@@ -69,6 +69,16 @@ class BookControllerTest {
     }
 
     @Nested
+    class WhenFindAllBooks {
+        @Test
+        void should_return_all_book_given_invoke_method() throws Exception {
+            mockMvc.perform(get(BASE_PATH))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.size()").value(0));
+        }
+    }
+
+    @Nested
     class WhenFindBookById {
         @Test
         void should_return_the_book_information_given_the_book_id() throws Exception {
