@@ -1,6 +1,7 @@
 package com.hsbc.bookmanagement.service;
 
 import com.hsbc.bookmanagement.controller.request.CreateBookRequest;
+import com.hsbc.bookmanagement.repository.entity.BookEntity;
 import com.hsbc.bookmanagement.exception.IncorrectISBNFormatException;
 import com.hsbc.bookmanagement.repository.BookRepository;
 import org.apache.commons.validator.routines.ISBNValidator;
@@ -20,6 +21,8 @@ public class BookService {
         if (!isValid) {
             throw new IncorrectISBNFormatException("incorrect isbn error");
         }
-        return repository.save(request);
+        BookEntity book = new BookEntity(request.getTitle(), request.getAuthor(), request.getPublicationYear(), request.getIsbn());
+        BookEntity saved = repository.save(book);
+        return saved.getId();
     }
 }

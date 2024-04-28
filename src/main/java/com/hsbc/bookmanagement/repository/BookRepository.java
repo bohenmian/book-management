@@ -1,10 +1,7 @@
 package com.hsbc.bookmanagement.repository;
 
-import org.springframework.stereotype.Repository;
+import com.hsbc.bookmanagement.repository.entity.BookEntity;
+import org.springframework.data.repository.CrudRepository;
 
-@Repository
-public class BookRepository {
-    public Long save(Object book) {
-        return 1L;
-    }
+public interface BookRepository extends CrudRepository<BookEntity, Long> {
 }

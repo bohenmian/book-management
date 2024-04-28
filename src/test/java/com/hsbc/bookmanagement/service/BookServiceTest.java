@@ -4,11 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 import com.hsbc.bookmanagement.controller.request.CreateBookRequest;
 import com.hsbc.bookmanagement.exception.IncorrectISBNFormatException;
 import com.hsbc.bookmanagement.fixture.CreateBookFixture;
 import com.hsbc.bookmanagement.repository.BookRepository;
+import com.hsbc.bookmanagement.repository.entity.BookEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,7 +29,9 @@ class BookServiceTest {
     @Test
     void should_create_book_and_return_the_book_id_given_the_book_information() {
         CreateBookRequest request = CreateBookFixture.bookRequest();
-        given(repository.save(any())).willReturn(1L);
+        BookEntity entity = mock(BookEntity.class);
+        given(entity.getId()).willReturn(1L);
+        given(repository.save(any())).willReturn(entity);
         Long result = service.create(request);
         assertThat(result).isEqualTo(1L);
     }
