@@ -28,7 +28,7 @@ public class BookService {
     }
 
     public List<BookEntity> findAll() {
-        return null;
+        return repository.findAll();
     }
 
     public BookEntity findById(Long bookId) {

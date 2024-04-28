@@ -16,6 +16,7 @@ import com.hsbc.bookmanagement.fixture.BookEntityFixture;
 import com.hsbc.bookmanagement.fixture.CreateBookFixture;
 import com.hsbc.bookmanagement.repository.BookRepository;
 import com.hsbc.bookmanagement.repository.entity.BookEntity;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -119,6 +120,21 @@ class BookServiceTest {
             service.delete(bookId);
 
             verify(repository).deleteById(bookId);
+        }
+    }
+
+    @Nested
+    class WhenFindAll {
+        @Test
+        void should_return_all_books() {
+            List<BookEntity> entities = List.of(BookEntityFixture.bookEntityFixture());
+            given(repository.findAll()).willReturn(entities);
+
+            List<BookEntity> result = service.findAll();
+
+            verify(repository, times(1)).findAll();
+            assertThat(result.size()).isEqualTo(1);
+            assertThat(result.get(0).getAuthor()).isEqualTo("dummy author");
         }
     }
 }
