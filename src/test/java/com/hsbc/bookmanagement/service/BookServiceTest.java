@@ -1,10 +1,12 @@
 package com.hsbc.bookmanagement.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.hsbc.bookmanagement.controller.request.CreateBookRequest;
+import com.hsbc.bookmanagement.exception.IncorrectISBNFormatException;
 import com.hsbc.bookmanagement.fixture.CreateBookFixture;
 import com.hsbc.bookmanagement.repository.BookRepository;
 import org.junit.jupiter.api.Test;
@@ -28,5 +30,13 @@ class BookServiceTest {
         given(repository.save(any())).willReturn(1L);
         Long result = service.create(request);
         assertThat(result).isEqualTo(1L);
+    }
+
+    @Test
+    void should_throw_incorrect_isbn_number_exception_given_the_wrong_isbn_number() {
+        CreateBookRequest request = new CreateBookRequest("Distributed System", "John", "2024", "dummy isbn");
+        assertThatThrownBy(() -> service.create(request))
+                .isInstanceOf(IncorrectISBNFormatException.class)
+                .hasMessageContaining("incorrect isbn error");
     }
 }
