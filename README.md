@@ -1,19 +1,34 @@
-# Read Me First
-The following was discovered as part of building this project:
+# Prerequisites
+- openjdk version 17+
+- Spring Boot 3.2.X
+- Installed Docker
+- Optional: Installed IntelliJ IDEA
 
-* The original package name 'com.hsbc.book-management' is invalid and this project uses 'com.hsbc.bookmanagement' instead.
+# Github
+Clone Backend project via: `https://github.com/bohenmian/book-management.git`
 
-# Getting Started
+# How to run the project in local environment
+```shell
+./gradlew bootRun
+```
 
-### Reference Documentation
-For further reference, please consider the following sections:
+# How to run the test
+```shell
+./gradlew test
+```
 
-* [Official Gradle documentation](https://docs.gradle.org)
-* [Spring Boot Gradle Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/3.2.5/gradle-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/3.2.5/gradle-plugin/reference/html/#build-image)
+# How to run with Docker
 
-### Additional Links
-These additional references should also help you:
-
-* [Gradle Build Scans – insights for your project's build](https://scans.gradle.com#gradle)
-
+1. Clone the project the desktop
+2. Run the command
+```shell
+./gradlew clean build
+```
+3. Build the docker image and run the project
+```shell
+docker build -t book-management .
+```
+4. Run the project 
+```shell
+docker run -p 8080:8080 book-management
+```
