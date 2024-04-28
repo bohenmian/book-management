@@ -1,9 +1,11 @@
 package com.hsbc.bookmanagement.service;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 import com.hsbc.bookmanagement.controller.request.CreateBookRequest;
 import com.hsbc.bookmanagement.exception.IncorrectISBNFormatException;
@@ -11,6 +13,7 @@ import com.hsbc.bookmanagement.fixture.BookEntityFixture;
 import com.hsbc.bookmanagement.fixture.CreateBookFixture;
 import com.hsbc.bookmanagement.repository.BookRepository;
 import com.hsbc.bookmanagement.repository.entity.BookEntity;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -41,5 +44,27 @@ class BookServiceTest {
         assertThatThrownBy(() -> service.create(request))
                 .isInstanceOf(IncorrectISBNFormatException.class)
                 .hasMessageContaining("incorrect isbn number, please check");
+    }
+
+    @Test
+    void should_return_the_book_information_given_the_book_id() {
+        Long bookId = 1L;
+        Optional<BookEntity> entity = Optional.of(BookEntityFixture.bookEntityFixture());
+        given(repository.findById(any())).willReturn(entity);
+
+        BookEntity result = service.findById(bookId);
+
+        assertThat(result.getAuthor()).isEqualTo("dummy author");
+        verify(repository).findById(1L);
+    }
+
+    @Test
+    void should_return_null_given_the_id_not_found_any_book() {
+        Long bookId = 1L;
+        given(repository.findById(any())).willReturn(Optional.empty());
+
+        BookEntity result = service.findById(bookId);
+
+        assertThat(result).isNull();
     }
 }
