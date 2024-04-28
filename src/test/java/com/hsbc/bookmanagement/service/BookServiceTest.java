@@ -7,6 +7,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import com.hsbc.bookmanagement.controller.request.CreateBookRequest;
+import com.hsbc.bookmanagement.controller.request.UpdateBookRequest;
 import com.hsbc.bookmanagement.exception.IncorrectISBNFormatException;
 import com.hsbc.bookmanagement.fixture.BookEntityFixture;
 import com.hsbc.bookmanagement.fixture.CreateBookFixture;
@@ -51,7 +52,7 @@ class BookServiceTest {
 
     @Nested
     class WhenFindBookById {
-        private Long bookId = 1L;
+        private final Long bookId = 1L;
         @Test
         void should_return_the_book_information_given_the_book_id() {
             Optional<BookEntity> entity = Optional.of(BookEntityFixture.bookEntityFixture());
@@ -70,6 +71,20 @@ class BookServiceTest {
             BookEntity result = service.findById(bookId);
 
             assertThat(result).isNull();
+        }
+    }
+
+    @Nested
+    class WhenUpdateBook {
+        private final Long bookId = 1L;
+        UpdateBookRequest request = new UpdateBookRequest("title", "update author", "2024", "962-215-001-2");
+        @Test
+        void should_update_the_book_given_the_new_book_information() {
+            BookEntity existing = BookEntityFixture.bookEntityFixture();
+            given(repository.findById(any())).willReturn(Optional.of(existing));
+            given(repository.save(any())).willReturn(existing);
+            service.update(bookId, request);
+            verify(repository).findById(bookId);
         }
     }
 }

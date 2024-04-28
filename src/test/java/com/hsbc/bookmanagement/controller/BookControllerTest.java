@@ -2,6 +2,7 @@ package com.hsbc.bookmanagement.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -83,12 +84,11 @@ class BookControllerTest {
         @Test
         void should_update_book_detail_given_the_new_book_information() throws Exception {
             UpdateBookRequest request = new UpdateBookRequest("title", "author", "2024", "962-215-001-2");
-            given(service.update(any(), any())).willReturn(1L);
+            doNothing().when(service).update(any(), any());
             mockMvc.perform(put(BASE_PATH + "/{id}/book", 1L)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request)))
-                    .andExpect(status().isOk())
-                    .andExpect(content().string("1"));
+                    .andExpect(status().isOk());
             verify(service, times(1)).update(1L, request);
         }
     }

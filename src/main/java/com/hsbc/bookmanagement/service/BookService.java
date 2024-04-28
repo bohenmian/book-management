@@ -32,7 +32,14 @@ public class BookService {
         return repository.findById(bookId).orElse(null);
     }
 
-    public Long update(Long bookId, UpdateBookRequest request) {
-        return null;
+    public void update(Long bookId, UpdateBookRequest request) {
+        BookEntity entity = findById(bookId);
+        BookEntity updated = new BookEntity(
+                request.getTitle() == null ? entity.getTitle() : request.getTitle(),
+                request.getAuthor() == null ? entity.getAuthor() : request.getAuthor(),
+                request.getPublicationYear() == null ? entity.getPublicationYear() : request.getPublicationYear(),
+                request.getIsbn() == null ? entity.getIsbn() : request.getIsbn()
+        );
+        repository.save(updated);
     }
 }
