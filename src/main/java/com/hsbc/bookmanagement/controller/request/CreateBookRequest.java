@@ -1,10 +1,14 @@
 package com.hsbc.bookmanagement.controller.request;
 
+import jakarta.validation.constraints.NotBlank;
 import java.util.Objects;
 
 public class CreateBookRequest {
+    @NotBlank
     String title;
+    @NotBlank
     String author;
+    @NotBlank
     String publicationYear;
     String isbn;
 

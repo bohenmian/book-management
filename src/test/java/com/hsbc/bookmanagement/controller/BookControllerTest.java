@@ -42,4 +42,14 @@ class BookControllerTest {
                 .andExpect(content().string("1"));
         verify(service, times(1)).create(request);
     }
+
+    @Test
+    void should_return_bad_request_given_the_book_title_is_null() throws Exception {
+        CreateBookRequest request = new CreateBookRequest(null, "author", "2024", "962-215-001-2");
+        mockMvc.perform(post("/api/v1/books")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest());
+        verify(service, times(0)).create(any());
+    }
 }

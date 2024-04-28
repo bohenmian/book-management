@@ -2,6 +2,7 @@ package com.hsbc.bookmanagement.controller;
 
 import com.hsbc.bookmanagement.controller.request.CreateBookRequest;
 import com.hsbc.bookmanagement.service.BookService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,7 @@ public class BookController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Long create(@RequestBody CreateBookRequest request) {
+    public Long create(@RequestBody @Valid CreateBookRequest request) {
         return service.create(request);
     }
 }
