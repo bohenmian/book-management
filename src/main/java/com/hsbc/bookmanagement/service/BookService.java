@@ -42,6 +42,7 @@ public class BookService {
             throw new BookNotFoundException(ErrorCode.BOOK_NOT_FOUND);
         }
         BookEntity updated = new BookEntity(
+                entity.getId(),
                 request.getTitle() == null ? entity.getTitle() : request.getTitle(),
                 request.getAuthor() == null ? entity.getAuthor() : request.getAuthor(),
                 request.getPublicationYear() == null ? entity.getPublicationYear() : request.getPublicationYear(),

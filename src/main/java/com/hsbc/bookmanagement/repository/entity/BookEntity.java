@@ -35,6 +35,14 @@ public class BookEntity {
         this.isbn = isbn;
     }
 
+    public BookEntity(Long id, String title, String author, String publicationYear, String isbn) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.publicationYear = publicationYear;
+        this.isbn = isbn;
+    }
+
     public Long getId() {
         return id;
     }
